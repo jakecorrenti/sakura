@@ -1,6 +1,8 @@
 use chrono::prelude::*;
 use clap::ArgMatches;
 
+mod db;
+
 pub fn run(args: &ArgMatches) {
     match args.subcommand_name() {
         Some("add") => {
@@ -12,9 +14,11 @@ pub fn run(args: &ArgMatches) {
             let name = name.to_string();
             let due_date = due_date.to_string();
 
-            match verify_due_date(&due_date[..]) {
+            match verify_due_date(due_date.as_str()) {
                 DueDateValidity::Valid(date) => {
-                    println!("provided date formatted and checked: {}", date);
+                    //TODO(jakecorrenti): Handle the Results for these calls accordingly
+                    db::create_table();
+                    db::save_new_item(name.as_str(), date.as_str());
                 }
                 DueDateValidity::Invalid(reason) => {
                     panic!("Date entered is invalid: {}", reason);
