@@ -24,7 +24,14 @@ pub fn run(args: &ArgMatches) {
                     panic!("Date entered is invalid: {}", reason);
                 }
             }
-        }
+        },
+        Some("list") => {
+            //TODO(jakecorrenti): Handle the Result for this call better
+            match db::get_all_items() {
+                Ok(items) => println!("{:#?}", items),
+                Err(e) => panic!(e),
+            }
+        },
         _ => (),
     }
 }
