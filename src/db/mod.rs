@@ -20,6 +20,14 @@ impl ScheduleItem {
             past_due: false,
         }
     }
+
+    pub fn name(&self) -> &str {
+        self.name.as_str()
+    }
+
+    pub fn due_date(&self) -> &str {
+        self.due_date.as_str()
+    }
 }
 
 pub fn create_table() -> Result<()> {
@@ -68,9 +76,9 @@ pub fn get_all_items() -> Result<Vec<ScheduleItem>, rusqlite::Error> {
         })
     })?;
 
-    let mut items = Vec::new(); 
+    let mut items = Vec::new();
     for ii in iter {
-        items.push(ii?); 
+        items.push(ii?);
     }
 
     Ok(items)

@@ -24,13 +24,14 @@ pub fn run(args: &ArgMatches) {
                     panic!("Date entered is invalid: {}", reason);
                 }
             }
-        },
-        Some("list") => {
-            //TODO(jakecorrenti): Handle the Result for this call better
-            match db::get_all_items() {
-                Ok(items) => println!("{:#?}", items),
-                Err(e) => panic!(e),
+        }
+        Some("list") => match db::get_all_items() {
+            Ok(items) => {
+                for item in items {
+                    println!("\"{}\" due on {}", item.name(), item.due_date());
+                }
             }
+            Err(e) => panic!(e),
         },
         _ => (),
     }
