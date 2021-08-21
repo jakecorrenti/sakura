@@ -1,5 +1,6 @@
 use chrono::prelude::*;
 use clap::ArgMatches;
+use crossterm::style::Stylize;
 
 mod db;
 
@@ -28,7 +29,17 @@ pub fn run(args: &ArgMatches) {
         Some("list") => match db::get_all_items() {
             Ok(items) => {
                 for item in items {
-                    println!("\"{}\" due on {}", item.name(), item.due_date());
+                    let date_components: Vec<&str> = item.due_date().split('-').collect();
+
+                    let month = date_components[0].to_string().parse::<u32>().unwrap();
+                    let day = date_components[1].to_string().parse::<u32>().unwrap();
+                    let year = date_components[2].to_string().parse::<i32>().unwrap();
+
+                    if Utc.ymd(year, month, day).lt(&Utc::now().date()) {
+                        println!("{}: {}", item.due_date().red(), item.name());
+                    } else {
+                        println!("{}: {}", item.due_date().green(), item.name());
+                    }
                 }
             }
             Err(e) => panic!(e),
