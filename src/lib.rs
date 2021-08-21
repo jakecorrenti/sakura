@@ -4,6 +4,11 @@ use crossterm::style::Stylize;
 
 mod db;
 
+enum DueDateValidity {
+    Valid(String),
+    Invalid(String),
+}
+
 pub fn run(args: &ArgMatches) {
     match args.subcommand_name() {
         Some("add") => {
@@ -46,11 +51,6 @@ pub fn run(args: &ArgMatches) {
         },
         _ => (),
     }
-}
-
-enum DueDateValidity {
-    Valid(String),
-    Invalid(String),
 }
 
 fn verify_due_date(input: &str) -> DueDateValidity {
