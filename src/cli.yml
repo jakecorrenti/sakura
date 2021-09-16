@@ -16,3 +16,6 @@ subcommands:
             help: The due-date of the new item
             index: 2
             required: true
+
+  - list: 
+      about: List all items that are stored within the database
